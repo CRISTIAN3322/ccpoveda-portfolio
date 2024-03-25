@@ -1,0 +1,46 @@
+---
+import '../../style/main.css'
+
+import Section from "../Section.astro"
+import {projects} from "@cv"
+---
+<Section title="Projectos">
+    <ul class="projects-ul">
+        {
+            projects.map(({name,isActive,description,highlights,url}) =>{
+                return(
+                    <li>
+                        <article class="projects-article">
+                            <header class="projects-article_header">
+                                <h3 class="projects-article_h3">
+                                    <a 
+                                        href={url} 
+                                        title={`Ver el projecto ${name}`}
+                                        class="projects-article_a"
+                                    >
+                                        {name}
+                                    </a>
+                                    {
+                                        isActive && <span class="projects-article_span">&bull;</span>
+                                    }
+                                    
+                                </h3>
+                                <p class="projects-article_p">
+                                    {description}
+                                </p>
+                            </header>
+                            <footer class="projects-footer">
+                                {
+                                    highlights.map((highlights)=>{
+                                        return <span class="projects-footer_span">{highlights}</span>
+                                    })
+                                }
+                            </footer>
+                        </article>
+                    </li>
+                )
+            })
+        }
+    </ul>
+
+</Section>

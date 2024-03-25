@@ -1,0 +1,18 @@
+---
+import '../../style/main.css'
+
+import Section from "../Section.astro"
+import {skills} from "@cv"
+---
+<Section title="Skills">
+    
+        <ul class="skills-ul">
+            {
+                skills.map(({name})=>(                     
+                    <li class="skills-li">
+                        <span>{name}</span>
+                    </li>
+                ))
+            }            
+        </ul>
+</Section>

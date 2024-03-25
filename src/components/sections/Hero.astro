@@ -1,0 +1,88 @@
+---
+import '../../style/main.css'
+
+import Section from '@/components/Section.astro'
+import {basics} from '@cv'
+import Mail from '@/icons/Mail.astro'
+import Phone from '@/icons/Phone.astro'
+import GitHub from '@/icons/GitHub.astro'
+import LinkedIn from '@/icons/LinkedIn.astro'
+import WorldMap from '@/icons/WorldMap.astro'
+import { boolean } from 'astro/zod'
+
+const {name, label, image,profiles,phone,email} = basics
+const {city, region} = basics.location
+
+const SOCIAL_ICONS: Record<string, any> = {
+    GitHub,
+    LinkedIn
+} 
+
+const linkenInfo = profiles.find(({network})=> network === "LinkenIn");
+const linkedUrl = linkenInfo?.url
+
+const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ")
+---
+
+<Section>
+    <div class="hero-container">
+        <div class="hero-info">
+            <h1 class="hero-h1">{name}</h1>
+            <h2 class="hero-h2">{label}</h2>
+            <span class="hero-span">
+                <WorldMap />
+                {city},{region}
+            </span>
+            <footer class="hero-footer print">
+                {printInfo}
+            </footer>
+            <footer class="hero-footer no-print">
+                {
+                    email && (
+                      <a 
+                        href={`mailto:${email}`}
+                        title={`Enviar un correo electrónico a ${name} al correo ${email}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hero-footer_a"
+                      >
+                        <Mail />
+                      </a>
+                    )
+                  }
+                  {
+                    phone && (
+                      <a
+                        href={`tel:${phone}`}
+                        title={`Llamar por teléfono a ${name} al numero ${phone}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hero-footer_a"
+                      >
+                        <Phone />
+                      </a>
+                    )
+                  }
+                  {
+                    profiles.map(({network, url, username})=>{
+                        const Icon = SOCIAL_ICONS[network]
+
+                        return (
+                            <a
+                                href="{url}"
+                                title="Visitar el prefil de ${name} en ${network}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hero-footer_a"
+                            ><Icon/>
+                            </a>
+                        )
+                    })
+                  }                        
+            </footer>
+        </div>
+        <figure>
+            <img src={image} alt={name} class="hero-img">
+        </figure>
+    </div>
+</Section>
